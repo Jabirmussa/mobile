@@ -44,7 +44,7 @@ export default function Login() {
                   style={styles.input} 
                   placeholder='Digite o seu email'
                   placeholderTextColor={COLORS.placeholderText}
-                  value=''
+                  value={email}
                   onChangeText={setEmail}
                   keyboardType='email-address'
                   autoCapitalize='none'
@@ -65,7 +65,7 @@ export default function Login() {
                       style={styles.input} 
                       placeholder='Digite o seu password'
                       placeholderTextColor={COLORS.placeholderText}
-                      value=''
+                      value={password}
                       onChangeText={setPassword}
                       secureTextEntry={!showPassword}
                     />

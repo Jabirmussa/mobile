@@ -1,18 +1,25 @@
-import { ActivityIndicator, KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Alert, KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View } from "react-native";
 import styles from "../../assets/styles/signup.style"
 import { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import COLORS from "@/constants/colors";
 import { Link } from "expo-router";
+import { userAuthStore } from "../../store/authStore"
 
 export default function signup() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+//   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSignup = () =>{};
+  const {user, isLoading, register } = userAuthStore();
+
+
+  const handleSignup = async() =>{
+    const result = await register(username, email, password);
+    if(!result.success) Alert.alert("Erro", result.error);
+  };
   return (
     <KeyboardAvoidingView
           style={{flex: 1}}
@@ -41,7 +48,7 @@ export default function signup() {
                                 placeholder='John Doe'
                                 placeholderTextColor={COLORS.placeholderText}
                                 value={username}
-                                onChangeText={setEmail}
+                                onChangeText={setUsername}
                                 autoCapitalize='none'
                             />
                         </View>
@@ -57,7 +64,7 @@ export default function signup() {
                             style={styles.input} 
                             placeholder='Digite o seu email'
                             placeholderTextColor={COLORS.placeholderText}
-                            value=''
+                            value={email}
                             onChangeText={setEmail}
                             keyboardType='email-address'
                             autoCapitalize='none'
@@ -77,7 +84,7 @@ export default function signup() {
                                 style={styles.input} 
                                 placeholder='Digite o seu password'
                                 placeholderTextColor={COLORS.placeholderText}
-                                value=''
+                                value={password}
                                 onChangeText={setPassword}
                                 secureTextEntry={!showPassword}
                                 />
@@ -93,7 +100,7 @@ export default function signup() {
                                 </TouchableOpacity>
                             </View>
                         </View>
-                        <TouchableOpacity style={styles.button} disabled={isLoading}>
+                        <TouchableOpacity style={styles.button} disabled={isLoading} onPress={handleSignup} >
                             {isLoading ? (
                                 <ActivityIndicator color="#fff" />
                             ) : (
