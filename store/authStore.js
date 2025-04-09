@@ -36,5 +36,6 @@ export const userAuthStore = create((set) => ({
             return {success: false, error: error.message};
         }
     }
+    
 
 }));
