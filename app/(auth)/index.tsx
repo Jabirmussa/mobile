@@ -1,17 +1,22 @@
-import { View, Text, Image, TextInput, TouchableOpacity, ActivityIndicator, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, Text, Image, TextInput, TouchableOpacity, ActivityIndicator, KeyboardAvoidingView, Platform, Alert } from 'react-native';
 import styles from "../../assets/styles/login.style"
 import { Ionicons } from '@expo/vector-icons';
 import COLORS from '@/constants/colors';
 import { useState } from 'react';
 import { Link } from 'expo-router';
+import { userAuthStore } from '@/store/authStore';
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
+  const { user, login, isLoading} = userAuthStore();
 
-  const handleLogin = () => {};
+  const handleLogin = async () => {
+    const result = await login(email, password);
+    if (!result.success) Alert.alert("Login failed", result.message);
+  };
 
   return (
     <KeyboardAvoidingView
@@ -81,7 +86,7 @@ export default function Login() {
                     </TouchableOpacity>
                 </View>
               </View>
-              <TouchableOpacity style={styles.button} disabled={isLoading}>
+              <TouchableOpacity style={styles.button} disabled={isLoading} onPress={handleLogin}>
                   {isLoading ? (
                     <ActivityIndicator color="#fff" />
                   ) : (
@@ -92,7 +97,7 @@ export default function Login() {
               {/*Footer*/}
               <View style={styles.footer}>
                   <Text style={styles.footerText}>Nao tem uma conta?</Text>
-                  <Link href="/signup" asChild>
+                  <Link href="/signup" asChild >
                     <TouchableOpacity>
                       <Text style={styles.link}>Sign Up</Text>
                     </TouchableOpacity>
