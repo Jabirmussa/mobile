@@ -79,7 +79,7 @@ export default function Create() {
             const imageType = fileType ? `image/${fileType.toLowerCase()}` : 'image/jpeg';
     
             const imageDataUrl = `data:${imageType};base64,${imageBase64}`;
-            const response = await fetch('https://backend-wii3.onrender.com/books', {
+            const response = await fetch('https://backend-wii3.onrender.com/api/books', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
